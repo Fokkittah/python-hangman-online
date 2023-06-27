@@ -1,6 +1,5 @@
 apple
 banana
-cat
 dog
 elephant
 fish
@@ -35,7 +34,6 @@ honeydew
 ice cream
 jalapeno
 kiwi
-lemon
 mushroom
 noodle
 onion
@@ -46,5 +44,6 @@ strawberry
 tomato
 vinegar
 watermelon
-cia
-glowie
+cat
+shark
+lemon

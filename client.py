@@ -5,8 +5,9 @@ import time
 
 class Client:
     def __init__(self, host, port):
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client.connect((host, port))
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Creates a new socket using IPv4 and TCP.
+        self.client.connect((host, port)) #  Connects the client to the server at the specified host and port.
+        # Flags used to manage the game state.
         self.game_over = False
         self.game_started = False
         self.my_turn = False
@@ -14,7 +15,7 @@ class Client:
     def receive(self):
         while True:
             try:
-                message = self.client.recv(1024).decode('ascii')
+                message = self.client.recv(1024).decode('ascii') # Listens for a message from the server, decodes it from bytes to a string, and assigns it to message.
                 if message == "Game is starting...":
                     self.game_started = True
                     print(message)
@@ -22,10 +23,10 @@ class Client:
                     self.game_over = True
                     print(message)
                     break
-                elif message.startswith("It is your turn"):
+                elif message.startswith("It is your turn"): # This is the message sent to the player whose turn it is.
                     self.my_turn = True
                     print(message)
-                elif message.startswith("Your turn"): #"Your turn" in message:
+                elif message.startswith("Your turn"): # This is the message sent to the other player when it's their turn.
                     self.my_turn = True
                     print(message)
                 else:
@@ -37,15 +38,16 @@ class Client:
 
     def write(self):
         while not self.game_started:
-            time.sleep(1)  # wait for the game to start
+            time.sleep(1)  # Wait for the game to start
 
         while not self.game_over:
             if self.my_turn:
                 message = input("Guess a letter: ")
                 self.client.send(message.encode('ascii'))
-                self.my_turn = False  # reset after making a guess
+                self.my_turn = False  # Reset after making a guess
 
-
+    # Method creates and starts two separate threads: one for receiving messages and one for sending messages. 
+    # This allows the client to listen for messages from the server and send messages to the server at the same time.
     def start(self):
         receive_thread = threading.Thread(target=self.receive)
         receive_thread.start()
